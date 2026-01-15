@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alke Wallet - Menú Principal</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="wallet.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+ <body>
+
+  <div class="container">
+
+    <div id="mensaje" class="alert alert-info d-none text-center"></div>
+
+    <div class="glass-card">
+
+      <h2 class="text-center">Alke Wallet</h2>
+
+      <div class="balance text-center mb-4">
+        $80.000
+      </div>
+
+      <button class="btn btn-primary btn-block mb-2"
+              onclick="redirigir('Depositar', 'deposit.html')">
+        Depositar
+      </button>
+
+      <button class="btn btn-primary btn-block mb-2"
+              onclick="redirigir('Enviar Dinero', 'sendmoney.html')">
+        Enviar Dinero
+      </button>
+
+      <button class="btn btn-secondary btn-block"
+              onclick="redirigir('Últimos Movimientos', 'transactions.html')">
+        Últimos Movimientos
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+    function redirigir(nombrePantalla, url) {
+      const mensaje = document.getElementById('mensaje');
+      mensaje.classList.remove('d-none');
+      mensaje.textContent = 'Redirigiendo a ' + nombrePantalla + '...';
+
+      setTimeout(() => {
+        window.location.href = url;
+      }, 1500);
+    }
+  </script>
+
+</body>

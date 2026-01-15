@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alke Wallet - Enviar Dinero</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="wallet.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .contacto {
+      cursor: pointer;
+    }
+
+    .contacto.active {
+      background-color: #d1ecf1;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="glass-card">
+
+    <h2 class="mb-3 text-center">Enviar Dinero</h2>
+
+    <input type="text"
+           id="buscar"
+           class="form-control mb-3"
+           placeholder="Buscar contacto">
+
+    <ul class="list-group mb-3" id="listaContactos"></ul>
+
+    <button class="btn btn-primary btn-block mb-3" id="btnMostrarFormulario">
+      Agregar nuevo contacto
+    </button>
+
+    <form id="formContacto" class="d-none">
+
+      <input type="text"
+             id="nombre"
+             class="form-control mb-2"
+             placeholder="Nombre"
+             required>
+
+      <input type="text"
+             id="banco"
+             class="form-control mb-2"
+             placeholder="Banco"
+             required>
+
+      <input type="text"
+             id="ndc"
+             class="form-control mb-2"
+             placeholder="Número de cuenta"
+             required>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success flex-fill">
+          Guardar
+        </button>
+        <button type="button"
+                class="btn btn-secondary flex-fill"
+                id="btnCancelar">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+
+    <button class="btn btn-success btn-block mt-3 d-none" id="btnEnviar">
+      Enviar Dinero
+    </button>
+
+    <div id="mensaje"
+         class="alert alert-success mt-3 d-none text-center"></div>
+
+    <a href="menu.html"
+       class="btn btn-secondary btn-block mt-3">
+      Volver
+    </a>
+
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+  let contactos = [
+    { nombre: 'Juan Pérez', banco: 'Banco Uno', ndc: '1234567890' },
+    { nombre: 'María López', banco: 'Banco Dos', ndc: '0987654321' }
+  ];
+
+  let contactoSeleccionado = null;
+
+  function mostrarContactos(lista) {
+    $('#listaContactos').empty();
+    lista.forEach((c, index) => {
+      $('#listaContactos').append(
+        `<li class="list-group-item contacto" data-index="${index}">
+          ${c.nombre}
+        </li>`
+      );
+    });
+  }
+
+  mostrarContactos(contactos);
+
+  $('#btnMostrarFormulario').click(() => {
+    $('#formContacto').removeClass('d-none');
+  });
+
+  $('#btnCancelar').click(() => {
+    $('#formContacto').addClass('d-none');
+  });
+
+  $('#formContacto').submit(function (e) {
+    e.preventDefault();
+
+    let nombre = $('#nombre').val();
+    let banco = $('#banco').val();
+    let cbu = $('#cbu').val();
+
+    if (cbu.length !== 10 || isNaN(cbu)) {
+      alert('El Número de cuenta debe tener 10 números');
+      return;
+    }
+
+    contactos.push({ nombre, banco, cbu });
+    mostrarContactos(contactos);
+    this.reset();
+    $('#formContacto').addClass('d-none');
+  });
+
+  $('#buscar').on('keyup', function () {
+    let texto = $(this).val().toLowerCase();
+    let filtrados = contactos.filter(c =>
+      c.nombre.toLowerCase().includes(texto)
+    );
+    mostrarContactos(filtrados);
+  });
+
+  $(document).on('click', '.contacto', function () {
+    $('.contacto').removeClass('active');
+    $(this).addClass('active');
+    contactoSeleccionado = contactos[$(this).data('index')];
+    $('#btnEnviar').removeClass('d-none');
+  });
+
+  $('#btnEnviar').click(function () {
+    $('#mensaje')
+      .removeClass('d-none')
+      .text(`Dinero enviado con éxito a ${contactoSeleccionado.nombre}`);
+  });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alke Wallet - Últimos Movimientos</title>
+
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="wallet.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="glass-card">
+
+    <h2 class="mb-3 text-center">Últimos Movimientos</h2>
+
+    <div class="form-group">
+      <label>Filtrar por tipo:</label>
+      <select id="filtro" class="form-control">
+        <option value="todos">Todos</option>
+        <option value="compra">Compra</option>
+        <option value="deposito">Depósito</option>
+        <option value="transferencia">Transferencia</option>
+      </select>
+    </div>
+
+    <ul class="list-group mb-3" id="listaMovimientos"></ul>
+
+    <a href="menu.html"
+       class="btn btn-secondary btn-block">
+      Volver al Menú Principal
+    </a>
+
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+  const listaTransacciones = [
+    { tipo: 'compra', monto: 15990 },
+    { tipo: 'deposito', monto: 85000 },
+    { tipo: 'transferencia', monto: 150000 },
+    { tipo: 'compra', monto: 34770 },
+    { tipo: 'transferencia', monto: 250000 },
+    { tipo: 'transferencia', monto: 350000 }
+  ];
+
+  function getTipoTransaccion(tipo) {
+    switch (tipo) {
+      case 'compra':
+        return 'Compra';
+      case 'deposito':
+        return 'Depósito';
+      case 'transferencia':
+        return 'Transferencia';
+      default:
+        return '';
+    }
+  }
+
+  function mostrarUltimosMovimientos(filtro) {
+    $('#listaMovimientos').empty();
+
+    listaTransacciones.forEach(transaccion => {
+      if (filtro === 'todos' || transaccion.tipo === filtro) {
+        $('#listaMovimientos').append(`
+          <li class="list-group-item">
+            ${getTipoTransaccion(transaccion.tipo)} - $${transaccion.monto}
+          </li>
+        `);
+      }
+    });
+  }
+
+  mostrarUltimosMovimientos('todos');
+
+  $('#filtro').change(function () {
+    const filtroSeleccionado = $(this).val();
+    mostrarUltimosMovimientos(filtroSeleccionado);
+  });
+</script>
+
+</body>
+</html>
